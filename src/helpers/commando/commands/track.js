@@ -9,6 +9,8 @@ const monsterData = require(monsterDataPath)
 const typeData = require(`${__dirname}/../../../util/types`)
 const formData = require(`${__dirname}/../../../util/forms`)
 
+const generationData = require(`${__dirname}/../../../util/generation`)
+
 exports.run = (client, msg, args) => {
 	let target = { id: msg.author.id, name: msg.author.tag }
 	if (!_.includes(client.config.discord.admins, msg.author.id) && msg.channel.type === 'text') {
@@ -57,8 +59,19 @@ exports.run = (client, msg, args) => {
 				const forms = []
 
 				args.forEach((element) => {
-					const pid = _.findKey(monsterData, mon => mon.name.toLowerCase() === element)
-					if (pid) monsters.push(pid)
+					
+					if(element == "gen1" || element == "gen2" || element == "gen3" || element == "gen4" || element == "gen5"){
+						const pid = _.findKey(generationData, mon => mon.name.toLowerCase() === element)
+						newPid = pid.split(",")
+						for (index = 0; index < newPid.length; ++index) {						
+    							if (newPid[index]) monsters.push(newPid[index])
+						}	
+					}
+					else {
+						const pid = _.findKey(monsterData, mon => mon.name.toLowerCase() === element)
+						if (pid) monsters.push(pid)
+					}
+					
 				})
 				args.forEach((element) => {
 
